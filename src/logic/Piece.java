@@ -9,8 +9,6 @@ import javax.swing.JLabel;
  */
 public abstract class Piece extends JLabel{
     private String pieceType;
-    private int x;
-    private int y;
     private String team;    
     
     public Piece(String image_file){

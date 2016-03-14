@@ -28,6 +28,7 @@ public class Board extends JFrame implements MouseListener
             {
                 JPanel panel = new JPanel();
                 panel.setBackground(getColor(i, j));
+                //panel.setName(i + ","+ j);
                 panel.addMouseListener(this);
                 add(panel);
                 squares[i][j] = panel;
@@ -54,8 +55,12 @@ public class Board extends JFrame implements MouseListener
 
     /* Mouse Events */
     @Override
-    public void mouseClicked(MouseEvent e) {
-        System.out.println(((logic.Piece)e.getComponent().getAccessibleContext().getAccessibleChild(0)).getType());
+    public void mouseClicked(MouseEvent e){
+        logic.Piece piece = (logic.Piece) e.getComponent().getAccessibleContext().getAccessibleChild(0);
+        
+        if(piece != null){
+            System.out.println(piece.getType());
+        }
     }
 
     @Override
