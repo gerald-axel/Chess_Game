@@ -7,10 +7,11 @@ package graphics;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import logic.PossibleMoves;
 
 public class Board extends JFrame implements MouseListener
 {
-    public JPanel[][] squares = new JPanel[8][8];
+    public static JPanel[][] squares = new JPanel[8][8];
     
     public Board() 
     {
@@ -28,7 +29,7 @@ public class Board extends JFrame implements MouseListener
             {
                 JPanel panel = new JPanel();
                 panel.setBackground(getColor(i, j));
-                //panel.setName(i + ","+ j);
+                panel.setName(i + ","+ j);
                 panel.addMouseListener(this);
                 add(panel);
                 squares[i][j] = panel;
@@ -60,6 +61,7 @@ public class Board extends JFrame implements MouseListener
         
         if(piece != null){
             System.out.println(piece.getType());
+            PossibleMoves.reviewPiece(piece.getType(), e.getComponent().getName(), piece.getTeam());
         }
     }
 

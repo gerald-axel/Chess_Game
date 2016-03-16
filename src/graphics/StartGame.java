@@ -21,10 +21,10 @@ public class StartGame
             board.addPiece(new logic.Pawn("src/piezas/Wpawn.png", "white"), 6, i);
         }
         
-        board.addPiece(new logic.Tower("src/piezas/Btower.png", "black"), 0, 7);
-        board.addPiece(new logic.Tower("src/piezas/Wtower.png", "white"), 7, 7);
-        board.addPiece(new logic.Tower("src/piezas/Btower.png", "black"), 0, 0);
-        board.addPiece(new logic.Tower("src/piezas/Wtower.png", "white"), 7, 0);
+        board.addPiece(new logic.Rook("src/piezas/Btower.png", "black"), 0, 7);
+        board.addPiece(new logic.Rook("src/piezas/Wtower.png", "white"), 7, 7);
+        board.addPiece(new logic.Rook("src/piezas/Btower.png", "black"), 0, 0);
+        board.addPiece(new logic.Rook("src/piezas/Wtower.png", "white"), 7, 0);
         
         board.addPiece(new logic.Knight("src/piezas/Bknight.png", "black"), 0, 6);
         board.addPiece(new logic.Knight("src/piezas/Wknight.png", "white"), 7, 6);
