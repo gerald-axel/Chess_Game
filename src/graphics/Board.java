@@ -38,7 +38,7 @@ public class Board extends JFrame implements MouseListener
     
     public Color getColor(int x, int y)
     {
-        return (x + y) % 2 == 0 ? Color.WHITE : Color.BLACK;
+        return (x + y) % 2 == 0 ? Color.WHITE : Color.GRAY;
     }
     
     public void addPiece(logic.Piece p, int x, int y)
