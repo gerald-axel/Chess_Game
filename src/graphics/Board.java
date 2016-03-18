@@ -7,11 +7,16 @@ package graphics;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
+
+import logic.MakeMove;
 import logic.PossibleMoves;
 
 public class Board extends JFrame implements MouseListener
 {
     public static JPanel[][] squares = new JPanel[8][8];
+    public boolean isSelected = false;
+    public static pieces.Piece pieceSelected;
     
     public Board() 
     {
@@ -28,9 +33,9 @@ public class Board extends JFrame implements MouseListener
             for(int j = 0; j < 8; j++)
             {
                 JPanel panel = new JPanel();
+                panel.addMouseListener(this);
                 panel.setBackground(getColor(i, j));
                 panel.setName(i + ","+ j);
-                panel.addMouseListener(this);
                 add(panel);
                 squares[i][j] = panel;
             }
@@ -42,7 +47,7 @@ public class Board extends JFrame implements MouseListener
         return (x + y) % 2 == 0 ? Color.WHITE : Color.GRAY;
     }
     
-    public void addPiece(logic.Piece p, int x, int y)
+    public void addPiece(pieces.Piece p, int x, int y)
     {
         squares[x][y].add(p);
         paintAll(getGraphics());
@@ -53,26 +58,71 @@ public class Board extends JFrame implements MouseListener
         squares[x][y].remove(0);
         paintAll(getGraphics());
     }
-
-    /* Mouse Events */
-    @Override
-    public void mouseClicked(MouseEvent e){
-        logic.Piece piece = (logic.Piece) e.getComponent().getAccessibleContext().getAccessibleChild(0);
-        
-        if(piece != null){
-            System.out.println(piece.getType());
-            PossibleMoves.reviewPiece(piece.getType(), e.getComponent().getName(), piece.getTeam());
+    
+    public void cleanBoard()
+    {
+        for(int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+            	squares[i][j].setBorder(null);            
+            }
         }
+    	isSelected = false;
     }
 
+    
+    /* Mouse Events */
     @Override
-    public void mousePressed(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e)
+    {    	
+    	/* 0 means there is not a piece, 1 means there is a piece */
+    	int squareHasPiece = e.getComponent().getAccessibleContext().getAccessibleChildrenCount();
+    	
+        /* You have selected a piece */
+        if(squareHasPiece != 0 && !isSelected){
+            pieces.Piece piece = (pieces.Piece) e.getComponent().getAccessibleContext().getAccessibleChild(0);
+            PossibleMoves.reviewPiece(piece);
+            pieceSelected = piece;
+            isSelected = true;
+        }
+        
+        /* You had made a move */
+        else if(isSelected){
+        	
+        	/* If the JPanel that is wanted to move is in the possibleMoves do it*/
+        	if(PossibleMoves.possibleMoves.contains(e.getComponent())){
+            	MakeMove.movePiece(pieceSelected, e.getComponent().getName());
+            	cleanBoard();
+        	} else{
+        		JOptionPane.showMessageDialog(null, "Movimiento no permitido!");
+            	cleanBoard();
+        	}
+        	PossibleMoves.possibleMoves.clear();
+
+        }
+        
+        else{
+        	cleanBoard();
+        }
+        
+    }
+
+    
+    public static void setBorders(int x, int y){
+    	Board.squares[x][y].setBorder(new CompoundBorder(
+        	    BorderFactory.createMatteBorder(0, 0, 0, 0, Color.RED), 
+        	    BorderFactory.createMatteBorder(2, 2, 2, 2, Color.RED)));
+    }
+    
+    @Override
+    public void mousePressed(MouseEvent e){}
 
     @Override
-    public void mouseReleased(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e){}
 
     @Override
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e){}
 
     @Override
     public void mouseExited(MouseEvent e){}

@@ -1,4 +1,4 @@
-package logic;
+package pieces;
 
 /**
  *
@@ -6,11 +6,12 @@ package logic;
  */
 public class King extends Piece{
     
-    public King(String image_file, String team)
+    public King(String image_file, String team, int []coordenates)
     {
         super(image_file);
         setType("King");
         setTeam(team);
+        setCoordenates(coordenates);
     }
     
 }
