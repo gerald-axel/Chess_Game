@@ -1,20 +1,17 @@
 package pieces;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-
+import javax.swing.*;
 /**
  *
  * @author gerald
  */
-public abstract class Piece extends JLabel implements Cloneable
+public abstract class Piece extends JLabel
 {	
     private String pieceType;
     private String team;
     private int [][]moves;
     private int movesCounter = 0;
     private int []coordenates;
-
     
     public Piece(String image_file)
     {
@@ -32,16 +29,13 @@ public abstract class Piece extends JLabel implements Cloneable
         this.team = team;
     }
     
-    public void setCoordenates(int []coordenates){
+    public void setCoordenates(int []coordenates)
+    {
     	this.coordenates = coordenates;
     }
     
-    public void setMoves(int [][]moves)
+    public void setMovesCounter()
     {
-    	this.moves = moves;
-    }
-    
-    public void setMovesCounter(){
     	this.movesCounter++;
     }
     
@@ -60,12 +54,8 @@ public abstract class Piece extends JLabel implements Cloneable
     	return this.movesCounter;
     }
     
-    public int[][] getMoves()
-    {
-    	return this.moves;
-    }
-    
     public int[] getCoordenates(){
     	return this.coordenates;
     }
+    
 }

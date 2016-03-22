@@ -1,17 +1,15 @@
 package logic;
 
 import graphics.Board;
-import pieces.Pawn;
 import pieces.Piece;
 
 public class MakeMove
 {
 	
-	public MakeMove(){
-		
-	}
+	public MakeMove(){}
 	
-	public static void movePiece(Piece piece, String coordenatesToMove){
+	public static void movePiece(Piece piece, String coordenatesToMove)
+	{
 		String []coord = coordenatesToMove.split(",");
 		int newCoordenateX = Integer.parseInt(coord[0]);
 		int newCoordenateY = Integer.parseInt(coord[1]);
@@ -23,7 +21,8 @@ public class MakeMove
 		graphics.StartGame.board.removePiece(oldPieceCoordenates[0], oldPieceCoordenates[1]);
 	}
 	
-	public static void generateNewPiece(int newCoordenateX, int newCoordenateY, Piece piece){
+	public static void generateNewPiece(int newCoordenateX, int newCoordenateY, Piece piece)
+	{
 		String colorImage = piece.getTeam().equals("white") ? "W" : "B";
 		
         switch(piece.getType()){
@@ -55,7 +54,8 @@ public class MakeMove
         ((Piece) Board.squares[newCoordenateX][newCoordenateY].getAccessibleContext().getAccessibleChild(0)).setMovesCounter();
 	}
 	
-	public static void reviewIfIsEating(int x, int y){
+	public static void reviewIfIsEating(int x, int y)
+	{
         int squarePiece = Board.squares[x][y].getAccessibleContext().getAccessibleChildrenCount();
         if(squarePiece != 0){
     		graphics.StartGame.board.removePiece(x, y);

@@ -14,6 +14,7 @@ import logic.PossibleMoves;
 
 public class Board extends JFrame implements MouseListener
 {
+	
     public static JPanel[][] squares = new JPanel[8][8];
     public boolean isSelected = false;
     public static pieces.Piece pieceSelected;
@@ -35,7 +36,7 @@ public class Board extends JFrame implements MouseListener
                 JPanel panel = new JPanel();
                 panel.addMouseListener(this);
                 panel.setBackground(getColor(i, j));
-                panel.setName(i + ","+ j);
+                panel.setName(i + "," + j);
                 add(panel);
                 squares[i][j] = panel;
             }
@@ -90,7 +91,7 @@ public class Board extends JFrame implements MouseListener
         /* You had made a move */
         else if(isSelected){
         	
-        	/* If the JPanel that is wanted to move is in the possibleMoves do it*/
+        	/* If the JPanel that is wanted to move is in the possibleMoves do it */
         	if(PossibleMoves.possibleMoves.contains(e.getComponent())){
             	MakeMove.movePiece(pieceSelected, e.getComponent().getName());
             	cleanBoard();
@@ -109,7 +110,8 @@ public class Board extends JFrame implements MouseListener
     }
 
     
-    public static void setBorders(int x, int y){
+    public static void setBorders(int x, int y)
+    {
     	Board.squares[x][y].setBorder(new CompoundBorder(
         	    BorderFactory.createMatteBorder(0, 0, 0, 0, Color.RED), 
         	    BorderFactory.createMatteBorder(2, 2, 2, 2, Color.RED)));
