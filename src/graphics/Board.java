@@ -18,6 +18,7 @@ public class Board extends JFrame implements MouseListener
     public static JPanel[][] squares = new JPanel[8][8];
     public boolean isSelected = false;
     public static pieces.Piece pieceSelected;
+    public static boolean isHumanTurn = true;
     
     public Board() 
     {
@@ -77,36 +78,40 @@ public class Board extends JFrame implements MouseListener
     @Override
     public void mouseClicked(MouseEvent e)
     {    	
-    	/* 0 means there is not a piece, 1 means there is a piece */
-    	int squareHasPiece = e.getComponent().getAccessibleContext().getAccessibleChildrenCount();
-    	
-        /* You have selected a piece */
-        if(squareHasPiece != 0 && !isSelected){
-            pieces.Piece piece = (pieces.Piece) e.getComponent().getAccessibleContext().getAccessibleChild(0);
-            PossibleMoves.reviewPiece(piece);
-            pieceSelected = piece;
-            isSelected = true;
-        }
-        
-        /* You had made a move */
-        else if(isSelected){
-        	
-        	/* If the JPanel that is wanted to move is in the possibleMoves do it */
-        	if(PossibleMoves.possibleMoves.contains(e.getComponent())){
-            	MakeMove.movePiece(pieceSelected, e.getComponent().getName());
-            	cleanBoard();
-        	} else{
-        		JOptionPane.showMessageDialog(null, "Movimiento no permitido!");
-            	cleanBoard();
-        	}
-        	PossibleMoves.possibleMoves.clear();
-
-        }
-        
-        else{
-        	cleanBoard();
-        }
-        
+    	if(isHumanTurn){
+    		
+	    	/* 0 means there is not a piece, 1 means there is a piece */
+	    	int squareHasPiece = e.getComponent().getAccessibleContext().getAccessibleChildrenCount();
+	    	
+	        /* You have selected a piece */
+	        if(squareHasPiece != 0 && !isSelected){
+	            pieces.Piece piece = (pieces.Piece) e.getComponent().getAccessibleContext().getAccessibleChild(0);
+	            PossibleMoves.reviewPiece(piece);
+	            pieceSelected = piece;
+	            isSelected = true;
+	        }
+	        
+	        /* You had made a move */
+	        else if(isSelected){
+	        	
+	        	/* If the JPanel that is wanted to move is in the possibleMoves do it */
+	        	if(PossibleMoves.possibleMoves.contains(e.getComponent())){
+	            	MakeMove.movePiece(pieceSelected, e.getComponent().getName());
+	            	cleanBoard();
+	        	} else{
+	        		JOptionPane.showMessageDialog(null, "Movimiento no permitido!");
+	            	cleanBoard();
+	        	}
+	        	PossibleMoves.possibleMoves.clear();
+	
+	        }
+	        
+	        else{
+	        	cleanBoard();
+	        }
+    	} else{
+    		JOptionPane.showMessageDialog(null, "No es tu turno.");
+    	}
     }
 
     

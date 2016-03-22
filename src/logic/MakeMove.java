@@ -19,6 +19,7 @@ public class MakeMove
 		reviewIfIsEating(newCoordenateX, newCoordenateY);
 		generateNewPiece(newCoordenateX, newCoordenateY, piece);
 		graphics.StartGame.board.removePiece(oldPieceCoordenates[0], oldPieceCoordenates[1]);
+		changeTurn();
 	}
 	
 	public static void generateNewPiece(int newCoordenateX, int newCoordenateY, Piece piece)
@@ -60,6 +61,11 @@ public class MakeMove
         if(squarePiece != 0){
     		graphics.StartGame.board.removePiece(x, y);
         }
+	}
+	
+	public static void changeTurn()
+	{
+		Board.isHumanTurn = Board.isHumanTurn ? false : true;
 	}
 
 }
