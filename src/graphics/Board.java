@@ -14,9 +14,11 @@ import logic.PossibleMoves;
 
 public class Board extends JFrame implements MouseListener
 {
+	
     public static JPanel[][] squares = new JPanel[8][8];
     public boolean isSelected = false;
     public static pieces.Piece pieceSelected;
+    public static boolean isHumanTurn = true;
     
     public Board() 
     {
@@ -35,7 +37,7 @@ public class Board extends JFrame implements MouseListener
                 JPanel panel = new JPanel();
                 panel.addMouseListener(this);
                 panel.setBackground(getColor(i, j));
-                panel.setName(i + ","+ j);
+                panel.setName(i + "," + j);
                 add(panel);
                 squares[i][j] = panel;
             }
@@ -76,40 +78,45 @@ public class Board extends JFrame implements MouseListener
     @Override
     public void mouseClicked(MouseEvent e)
     {    	
-    	/* 0 means there is not a piece, 1 means there is a piece */
-    	int squareHasPiece = e.getComponent().getAccessibleContext().getAccessibleChildrenCount();
-    	
-        /* You have selected a piece */
-        if(squareHasPiece != 0 && !isSelected){
-            pieces.Piece piece = (pieces.Piece) e.getComponent().getAccessibleContext().getAccessibleChild(0);
-            PossibleMoves.reviewPiece(piece);
-            pieceSelected = piece;
-            isSelected = true;
-        }
-        
-        /* You had made a move */
-        else if(isSelected){
-        	
-        	/* If the JPanel that is wanted to move is in the possibleMoves do it*/
-        	if(PossibleMoves.possibleMoves.contains(e.getComponent())){
-            	MakeMove.movePiece(pieceSelected, e.getComponent().getName());
-            	cleanBoard();
-        	} else{
-        		JOptionPane.showMessageDialog(null, "Movimiento no permitido!");
-            	cleanBoard();
-        	}
-        	PossibleMoves.possibleMoves.clear();
-
-        }
-        
-        else{
-        	cleanBoard();
-        }
-        
+    	if(isHumanTurn){
+    		
+	    	/* 0 means there is not a piece, 1 means there is a piece */
+	    	int squareHasPiece = e.getComponent().getAccessibleContext().getAccessibleChildrenCount();
+	    	
+	        /* You have selected a piece */
+	        if(squareHasPiece != 0 && !isSelected){
+	            pieces.Piece piece = (pieces.Piece) e.getComponent().getAccessibleContext().getAccessibleChild(0);
+	            PossibleMoves.reviewPiece(piece);
+	            pieceSelected = piece;
+	            isSelected = true;
+	        }
+	        
+	        /* You had made a move */
+	        else if(isSelected){
+	        	
+	        	/* If the JPanel that is wanted to move is in the possibleMoves do it */
+	        	if(PossibleMoves.possibleMoves.contains(e.getComponent())){
+	            	MakeMove.movePiece(pieceSelected, e.getComponent().getName());
+	            	cleanBoard();
+	        	} else{
+	        		JOptionPane.showMessageDialog(null, "Movimiento no permitido!");
+	            	cleanBoard();
+	        	}
+	        	PossibleMoves.possibleMoves.clear();
+	
+	        }
+	        
+	        else{
+	        	cleanBoard();
+	        }
+    	} else{
+    		JOptionPane.showMessageDialog(null, "No es tu turno.");
+    	}
     }
 
     
-    public static void setBorders(int x, int y){
+    public static void setBorders(int x, int y)
+    {
     	Board.squares[x][y].setBorder(new CompoundBorder(
         	    BorderFactory.createMatteBorder(0, 0, 0, 0, Color.RED), 
         	    BorderFactory.createMatteBorder(2, 2, 2, 2, Color.RED)));

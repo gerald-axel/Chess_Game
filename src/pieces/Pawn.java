@@ -12,11 +12,6 @@ public class Pawn extends Piece{
         setType("Pawn");
         setTeam(team);
         setCoordenates(coordenates);
-        setMoves(new int[][]{
-        	{},
-        	{},
-        	
-        });
     }
     
 }
