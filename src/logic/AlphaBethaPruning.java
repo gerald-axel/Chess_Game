@@ -8,10 +8,17 @@ public class AlphaBethaPruning {
 	NodeAlphaBetha root;
 	public AlphaBethaPruning(Piece[][] rootmap) {
 		root = new NodeAlphaBetha(rootmap);
-		prune(root,-100000,100000,5,true);
+	}
+	public NodeAlphaBetha YourTurn(String player){
+		if(player.equals("black")){
+			return prune(root,-100000,100000,5,true);
+		}
+		else{
+			return prune(root,-100000,100000,5,false);
+		}
 	}
 	public NodeAlphaBetha prune(NodeAlphaBetha node, int alpha, int betha,int prof, boolean max){
-		NodeAlphaBetha aux = null;
+		NodeAlphaBetha aux = new NodeAlphaBetha();
 		node = findFuture(node);
 		if(node.nodes.isEmpty() || prof==0){
 			node.calculateValue();
@@ -19,17 +26,17 @@ public class AlphaBethaPruning {
 		}else{
 			if(max){
 				for (NodeAlphaBetha sonNode : node.nodes) {
-					
 					aux = prune(sonNode,alpha,betha,prof-1,false);
 					if(aux.getValue()>alpha){
 						alpha = aux.getValue();
 					}
 					if(alpha>=betha){
 						aux.setValue(betha);
+						aux.setMap(sonNode.getMap());
 						return aux;
-					}
-					
+					}	
 				}
+				aux.setMap(node.getMap());
 				aux.setValue(alpha);
 				return aux;
 			}
@@ -41,11 +48,13 @@ public class AlphaBethaPruning {
 						betha = aux.getValue();
 					}
 					if(alpha>=betha){
+						aux.setMap(sonNode.getMap());
 						aux.setValue(alpha);
 						return aux;
 					}
 					
 				}
+				aux.setMap(node.getMap());
 				aux.setValue(betha);
 				return aux;
 			}

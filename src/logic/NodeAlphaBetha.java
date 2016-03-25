@@ -7,7 +7,6 @@ import pieces.Piece;
 public class NodeAlphaBetha {
 	private Piece[][] map = new Piece[8][8];
 	private int value = 0;
-	private NodeAlphaBetha reference = null;
 	private boolean maxmin = true;
 	public ArrayList<NodeAlphaBetha> nodes = new ArrayList<NodeAlphaBetha>();
 	
@@ -15,6 +14,11 @@ public class NodeAlphaBetha {
 		this.map = map;	
 	}
 	
+	public NodeAlphaBetha() {
+		// TODO Auto-generated constructor stub
+		
+	}
+
 	public Piece[][] getMap() {
 		return map;
 	}
@@ -26,12 +30,6 @@ public class NodeAlphaBetha {
 	}
 	public void setValue(int value) {
 		this.value = value;
-	}
-	public NodeAlphaBetha getReference() {
-		return reference;
-	}
-	public void setReference(NodeAlphaBetha reference) {
-		this.reference = reference;
 	}
 	
 	public int calculateValue(){
