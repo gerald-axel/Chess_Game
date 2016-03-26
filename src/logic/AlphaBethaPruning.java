@@ -9,12 +9,15 @@ public class AlphaBethaPruning {
 	public AlphaBethaPruning(Piece[][] rootmap) {
 		root = new NodeAlphaBetha(rootmap);
 	}
-	public NodeAlphaBetha YourTurn(String player){
+	public Piece[][] YourTurn(String player){
+		NodeAlphaBetha BestMove;
 		if(player.equals("black")){
-			return prune(root,-100000,100000,5,true);
+			BestMove = prune(root,-100000,100000,5,true);
+			return BestMove.getMap();
 		}
 		else{
-			return prune(root,-100000,100000,5,false);
+			BestMove = prune(root,-100000,100000,5,false);
+			return BestMove.getMap();
 		}
 	}
 	public NodeAlphaBetha prune(NodeAlphaBetha node, int alpha, int betha,int prof, boolean max){
