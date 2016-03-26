@@ -19,14 +19,15 @@ public class AlphaBethaPruning {
 	}
 	public NodeAlphaBetha prune(NodeAlphaBetha node, int alpha, int betha,int prof, boolean max){
 		NodeAlphaBetha aux = new NodeAlphaBetha();
-		node = findFuture(node);
-		if(node.nodes.isEmpty() || prof==0){
+		ArrayList<NodeAlphaBetha> listMovs = findFuture(node);
+		if(listMovs.isEmpty() || prof==0){
 			node.calculateValue();
 			return node;
 		}else{
 			if(max){
-				for (NodeAlphaBetha sonNode : node.nodes) {
+				for (NodeAlphaBetha sonNode : listMovs) {
 					aux = prune(sonNode,alpha,betha,prof-1,false);
+					node.nodes.add(aux);
 					if(aux.getValue()>alpha){
 						alpha = aux.getValue();
 					}
@@ -41,9 +42,9 @@ public class AlphaBethaPruning {
 				return aux;
 			}
 			else{
-				for (NodeAlphaBetha sonNode : node.nodes) {
-					
+				for (NodeAlphaBetha sonNode : listMovs) {
 					aux = prune(sonNode,alpha,betha,prof-1,true);
+					node.nodes.add(aux);
 					if(aux.getValue()<betha){
 						betha = aux.getValue();
 					}
@@ -61,9 +62,9 @@ public class AlphaBethaPruning {
 		}
 	}
 	
-	public NodeAlphaBetha findFuture(NodeAlphaBetha node){
+	public ArrayList<NodeAlphaBetha> findFuture(NodeAlphaBetha node){
 		Piece[][] map = node.getMap();
-		
+		ArrayList<NodeAlphaBetha> listedMovs  = new ArrayList<NodeAlphaBetha>();
 		for(int x = 0; x < 8; x++){
 			for(int y = 0; y < 8; y++){
 				if(map[x][y]!=null){
@@ -76,12 +77,12 @@ public class AlphaBethaPruning {
 						int newCoordenateY = Integer.parseInt(coord[1]);
 						aux[newCoordenateX][newCoordenateY] = aux[x][y];
 						aux[x][y]=null;
-						node.nodes.add(new NodeAlphaBetha(aux));
+						listedMovs.add(new NodeAlphaBetha(aux));
 					}
 				}
 				
 			}
 		}
-		return node;
+		return listedMovs;
 	}
 }
