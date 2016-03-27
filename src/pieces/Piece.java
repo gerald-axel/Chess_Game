@@ -5,7 +5,7 @@ import javax.swing.*;
  *
  * @author gerald
  */
-public abstract class Piece extends JLabel
+public abstract class Piece extends JLabel implements Cloneable
 {	
     private String pieceType;
     private String team;
@@ -57,5 +57,7 @@ public abstract class Piece extends JLabel
     public int[] getCoordenates(){
     	return this.coordenates;
     }
-    
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

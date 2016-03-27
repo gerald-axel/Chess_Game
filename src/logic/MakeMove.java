@@ -30,6 +30,8 @@ public class MakeMove
 			newBoardMachine = prune.YourTurn("black");
 			removeAllPieces();
 			newBoard();
+			changeTurn();
+			System.out.println("lo que sea");
 		}
 		
 	}

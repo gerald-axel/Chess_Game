@@ -12,11 +12,11 @@ public class AlphaBethaPruning {
 	public Piece[][] YourTurn(String player){
 		NodeAlphaBetha BestMove;
 		if(player.equals("black")){
-			BestMove = prune(root,-100000,100000,5,true);
+			BestMove = prune(root,-100000,100000,2,true);
 			return BestMove.getMap();
 		}
 		else{
-			BestMove = prune(root,-100000,100000,5,false);
+			BestMove = prune(root,-100000,100000,2,false);
 			return BestMove.getMap();
 		}
 	}
@@ -40,7 +40,7 @@ public class AlphaBethaPruning {
 						return aux;
 					}	
 				}
-				aux.setMap(node.getMap());
+				aux.setMap(node.nodes.get(0).getMap());
 				aux.setValue(alpha);
 				return aux;
 			}
@@ -58,7 +58,7 @@ public class AlphaBethaPruning {
 					}
 					
 				}
-				aux.setMap(node.getMap());
+				aux.setMap(node.nodes.get(0).getMap());
 				aux.setValue(betha);
 				return aux;
 			}
@@ -71,16 +71,30 @@ public class AlphaBethaPruning {
 		for(int x = 0; x < 8; x++){
 			for(int y = 0; y < 8; y++){
 				if(map[x][y]!=null){
-					
-					PossibleMoves.reviewPiece(map[x][y]);
-					for (javax.swing.JPanel piece : PossibleMoves.possibleMoves) {
-						Piece[][] aux = map.clone();
-						String []coord = piece.getName().split(",");
-						int newCoordenateX = Integer.parseInt(coord[0]);
-						int newCoordenateY = Integer.parseInt(coord[1]);
-						aux[newCoordenateX][newCoordenateY] = aux[x][y];
-						aux[x][y]=null;
-						listedMovs.add(new NodeAlphaBetha(aux));
+					if(map[x][y].getTeam().equals("black")){
+						PossibleMoves.possibleMoves.clear();
+						PossibleMoves.reviewPiece(map[x][y]);
+						for (javax.swing.JPanel piece : PossibleMoves.possibleMoves) {
+							Piece[][] aux = new Piece[8][8];
+							for(int i = 0; i < 8; i++){
+								for(int j = 0; j < 8; j++){
+									if(map[i][j]!=null){
+										try {
+											aux[i][j] = (Piece) map[i][j].clone();
+										} catch (CloneNotSupportedException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+									}
+								}
+							}
+							String []coord = piece.getName().split(",");
+							int newCoordenateX = Integer.parseInt(coord[0]);
+							int newCoordenateY = Integer.parseInt(coord[1]);
+							aux[newCoordenateX][newCoordenateY] = aux[x][y];
+							aux[x][y]=null;
+							listedMovs.add(new NodeAlphaBetha(aux));
+						}
 					}
 				}
 				
