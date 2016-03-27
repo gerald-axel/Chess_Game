@@ -5,6 +5,8 @@ import pieces.Piece;
 
 public class MakeMove
 {
+	public static pieces.Piece [][]matrixPieces; 
+	public static pieces.Piece [][]newBoardMachine;
 	
 	public MakeMove(){}
 	
@@ -20,6 +22,16 @@ public class MakeMove
 		generateNewPiece(newCoordenateX, newCoordenateY, piece);
 		graphics.StartGame.board.removePiece(oldPieceCoordenates[0], oldPieceCoordenates[1]);
 		changeTurn();
+		
+		if(!Board.isHumanTurn)
+		{
+			makeArrayForTree();
+			AlphaBethaPruning prune = new AlphaBethaPruning(matrixPieces);
+			newBoardMachine = prune.YourTurn("black");
+			removeAllPieces();
+			newBoard();
+		}
+		
 	}
 	
 	public static void generateNewPiece(int newCoordenateX, int newCoordenateY, Piece piece)
@@ -67,5 +79,49 @@ public class MakeMove
 	{
 		Board.isHumanTurn = Board.isHumanTurn ? false : true;
 	}
+	
+	public static void makeArrayForTree()
+	{
+		matrixPieces = new pieces.Piece[8][8];
+		
+		for (int i = 0; i < 8; i++) 
+		{
+			for (int j = 0; j < 8; j++) 
+			{
+				matrixPieces[i][j] = (pieces.Piece) Board.squares[i][j].getAccessibleContext().getAccessibleChild(0);
+			}
+		}
+	}
+	
+	public static void removeAllPieces()
+	{
+		for (int i = 0; i < 8; i++) 
+		{
+			for (int j = 0; j < 8; j++) 
+			{
+		    	int squareHasPiece = Board.squares[i][j].getAccessibleContext().getAccessibleChildrenCount();
+		    	
+		    	if(squareHasPiece != 0){
+					graphics.StartGame.board.removePiece(i, j);
+		    	}
+			}
+		}
+	}
 
+	public static void newBoard()
+	{
+		pieces.Piece piece;
+		int []coordenates;
+		
+		for (int i = 0; i < 8; i++) 
+		{
+			for (int j = 0; j < 8; j++) 
+			{
+				if(newBoardMachine[i][j] != null){
+					System.out.println(i + "," + j);
+					generateNewPiece(i, j, newBoardMachine[i][j]);
+				}
+			}
+		}
+	}
 }
