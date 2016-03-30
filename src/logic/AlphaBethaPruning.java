@@ -14,10 +14,12 @@ public class AlphaBethaPruning {
 		NodeAlphaBetha BestMove;
 		if(player.equals("black")){
 			BestMove = prune(root,-100000,100000,5,true);
+			root = null;
 			return BestMove.getMap();
 		}
 		else{
 			BestMove = prune(root,-100000,100000,5,false);
+			root = null;
 			return BestMove.getMap();
 		}
 	}
@@ -41,8 +43,10 @@ public class AlphaBethaPruning {
 						return aux;
 					}	
 				}
-				int x = (int) Math.random()*node.nodes.size();
-				aux.setMap(node.nodes.get(0).getMap());
+				Random ran = new Random();
+				int x = ran.nextInt(node.nodes.size());
+				//int x = (int) Math.random()*node.nodes.size();
+				aux.setMap(node.nodes.get(x).getMap());
 				aux.setValue(alpha);
 				return aux;
 			}
@@ -60,7 +64,10 @@ public class AlphaBethaPruning {
 					}
 					
 				}
-				aux.setMap(node.nodes.get(0).getMap());
+				Random ran = new Random();
+				int x = ran.nextInt(node.nodes.size());
+				//int x = (int) Math.random()*node.nodes.size();
+				aux.setMap(node.nodes.get(x).getMap());
 				aux.setValue(betha);
 				return aux;
 			}
