@@ -64,10 +64,10 @@ public class AlphaBethaPruning {
 					}
 					
 				}
-				Random ran = new Random();
-				int x = ran.nextInt(node.nodes.size());
+				//Random ran = new Random();
+				//int x = ran.nextInt(node.nodes.size());
 				//int x = (int) Math.random()*node.nodes.size();
-				aux.setMap(node.nodes.get(x).getMap());
+				aux.setMap(node.nodes.get(node.nodes.size() - 1 ).getMap());
 				aux.setValue(betha);
 				return aux;
 			}
