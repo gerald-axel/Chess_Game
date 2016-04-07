@@ -52,13 +52,16 @@ public class Board extends JFrame implements MouseListener
     public void addPiece(pieces.Piece p, int x, int y)
     {
         squares[x][y].add(p);
-        paintAll(getGraphics());
     }
     
     public void removePiece(int x, int y)
     {
         squares[x][y].remove(0);
-        paintAll(getGraphics());
+    }
+    
+    public void repaintBoard()
+    {
+    	paintAll(getGraphics());
     }
     
     public void cleanBoard()

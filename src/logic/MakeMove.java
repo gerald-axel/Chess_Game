@@ -21,6 +21,8 @@ public class MakeMove
 		reviewIfIsEating(newCoordenateX, newCoordenateY);
 		generateNewPiece(newCoordenateX, newCoordenateY, piece);
 		graphics.StartGame.board.removePiece(oldPieceCoordenates[0], oldPieceCoordenates[1]);
+		graphics.StartGame.board.repaintBoard();
+    	PossibleMoves.possibleMoves.clear();
 		changeTurn();
 		
 		if(!Board.isHumanTurn)
@@ -30,8 +32,9 @@ public class MakeMove
 			newBoardMachine = prune.YourTurn("black");
 			removeAllPieces();
 			newBoard();
+        	PossibleMoves.possibleMoves.clear();
+			graphics.StartGame.board.repaintBoard();
 			changeTurn();
-			System.out.println("lo que sea");
 		}
 		
 	}
@@ -43,6 +46,11 @@ public class MakeMove
         switch(piece.getType()){
 	        case "Pawn":
 	            graphics.StartGame.board.addPiece(new pieces.Pawn("src/pieces_images/" + colorImage + "pawn.png", piece.getTeam(), new int[]{newCoordenateX, newCoordenateY}), newCoordenateX, newCoordenateY);
+	    		
+	            if(!(newCoordenateX == 1 || newCoordenateX == 6)){
+	    			((Piece) Board.squares[newCoordenateX][newCoordenateY].getAccessibleContext().getAccessibleChild(0)).setMovesCounter();
+	    		} 
+	            
 	            break;
 	        
 	        case "Knight":
@@ -66,7 +74,6 @@ public class MakeMove
 	            break;
         }
         
-        ((Piece) Board.squares[newCoordenateX][newCoordenateY].getAccessibleContext().getAccessibleChild(0)).setMovesCounter();
 	}
 	
 	public static void reviewIfIsEating(int x, int y)
@@ -111,16 +118,12 @@ public class MakeMove
 	}
 
 	public static void newBoard()
-	{
-		pieces.Piece piece;
-		int []coordenates;
-		
+	{		
 		for (int i = 0; i < 8; i++) 
 		{
 			for (int j = 0; j < 8; j++) 
 			{
 				if(newBoardMachine[i][j] != null){
-					System.out.println(i + "," + j);
 					generateNewPiece(i, j, newBoardMachine[i][j]);
 				}
 			}

@@ -9,7 +9,6 @@ public abstract class Piece extends JLabel implements Cloneable
 {	
     private String pieceType;
     private String team;
-    private int [][]moves;
     private int movesCounter = 0;
     private int []coordenates;
     
