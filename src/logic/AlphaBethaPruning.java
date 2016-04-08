@@ -13,12 +13,12 @@ public class AlphaBethaPruning {
 	public Piece[][] YourTurn(String player){
 		NodeAlphaBetha BestMove;
 		if(player.equals("black")){
-			BestMove = prune(root,-100000,100000,5,true);
+			BestMove = prune(root,-100000,100000,4,true);
 			root = null;
 			return BestMove.getMap();
 		}
 		else{
-			BestMove = prune(root,-100000,100000,5,false);
+			BestMove = prune(root,-100000,100000,4,false);
 			root = null;
 			return BestMove.getMap();
 		}
@@ -36,6 +36,7 @@ public class AlphaBethaPruning {
 					node.nodes.add(sonNode);
 					if(aux.getValue()>alpha){
 						alpha = aux.getValue();
+						aux.setMap(sonNode.getMap());
 					}
 					if(alpha>=betha){
 						aux.setValue(betha);
@@ -43,10 +44,7 @@ public class AlphaBethaPruning {
 						return aux;
 					}	
 				}
-				Random ran = new Random();
-				int x = ran.nextInt(node.nodes.size());
-				//int x = (int) Math.random()*node.nodes.size();
-				aux.setMap(node.nodes.get(x).getMap());
+				aux.setMap(node.nodes.get(0).getMap());
 				aux.setValue(alpha);
 				return aux;
 			}
@@ -55,6 +53,7 @@ public class AlphaBethaPruning {
 					aux = prune(sonNode,alpha,betha,prof-1,true);
 					node.nodes.add(sonNode);
 					if(aux.getValue()<betha){
+						aux.setMap(sonNode.getMap());
 						betha = aux.getValue();
 					}
 					if(alpha>=betha){
@@ -64,10 +63,6 @@ public class AlphaBethaPruning {
 					}
 					
 				}
-				//Random ran = new Random();
-				//int x = ran.nextInt(node.nodes.size());
-				//int x = (int) Math.random()*node.nodes.size();
-				aux.setMap(node.nodes.get(node.nodes.size() - 1 ).getMap());
 				aux.setValue(betha);
 				return aux;
 			}
@@ -135,5 +130,22 @@ public class AlphaBethaPruning {
 			}
 		}
 		return listedMovs;
+	}
+	
+	public Piece[][] clonar(Piece[][] map){
+		Piece[][] aux = new Piece[8][8];
+		for(int i = 0; i < 8; i++){
+			for(int j = 0; j < 8; j++){
+				if(map[i][j]!=null){
+					try {
+						aux[i][j] = (Piece) map[i][j].clone();
+					} catch (CloneNotSupportedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		return aux;
 	}
 }
