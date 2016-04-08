@@ -30,13 +30,14 @@ public class AlphaBethaPruning {
 			node.calculateValue();
 			return node;
 		}else{
+			NodeAlphaBetha aux2 = new NodeAlphaBetha();
 			if(max){
 				for (NodeAlphaBetha sonNode : listMovs) {
 					aux = prune(sonNode,alpha,betha,prof-1,false);
 					node.nodes.add(sonNode);
 					if(aux.getValue()>alpha){
 						alpha = aux.getValue();
-						aux.setMap(sonNode.getMap());
+						aux2.setMap(sonNode.getMap());
 					}
 					if(alpha>=betha){
 						aux.setValue(betha);
@@ -44,16 +45,16 @@ public class AlphaBethaPruning {
 						return aux;
 					}	
 				}
-				aux.setMap(node.nodes.get(0).getMap());
-				aux.setValue(alpha);
-				return aux;
+				//aux.setMap(node.nodes.get(0).getMap());
+				aux2.setValue(alpha);
+				return aux2;
 			}
 			else{
 				for (NodeAlphaBetha sonNode : listMovs) {
 					aux = prune(sonNode,alpha,betha,prof-1,true);
 					node.nodes.add(sonNode);
 					if(aux.getValue()<betha){
-						aux.setMap(sonNode.getMap());
+						aux2.setMap(sonNode.getMap());
 						betha = aux.getValue();
 					}
 					if(alpha>=betha){
@@ -63,8 +64,8 @@ public class AlphaBethaPruning {
 					}
 					
 				}
-				aux.setValue(betha);
-				return aux;
+				aux2.setValue(betha);
+				return aux2;
 			}
 		}
 	}
