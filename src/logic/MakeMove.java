@@ -1,11 +1,10 @@
 package logic;
 
-import graphics.Board;
-import pieces.Piece;
+import graphics.*;
+import pieces.*;
 
 public class MakeMove
 {
-	public static pieces.Piece [][]matrixPieces; 
 	public static pieces.Piece [][]newBoardMachine;
 	
 	public MakeMove(){}
@@ -20,15 +19,17 @@ public class MakeMove
 		
 		reviewIfIsEating(newCoordenateX, newCoordenateY);
 		generateNewPiece(newCoordenateX, newCoordenateY, piece);
-		graphics.StartGame.board.removePiece(oldPieceCoordenates[0], oldPieceCoordenates[1]);
-		graphics.StartGame.board.repaintBoard();
+		StartGame.board.removePiece(oldPieceCoordenates[0], oldPieceCoordenates[1]);
+    	Board.cleanBoard();
+		StartGame.board.repaintBoard();
     	PossibleMoves.possibleMoves.clear();
 		changeTurn();
 		
+		/* Machine turn */
 		if(!Board.isHumanTurn)
-		{
-			makeArrayForTree();
-			AlphaBethaPruning prune = new AlphaBethaPruning(matrixPieces);
+		{			
+			/* Generating the tree */
+			AlphaBethaPruning prune = new AlphaBethaPruning(makeArrayForTree());
 			newBoardMachine = prune.YourTurn("black");
 			removeAllPieces();
 			newBoard();
@@ -45,7 +46,7 @@ public class MakeMove
 		
         switch(piece.getType()){
 	        case "Pawn":
-	            graphics.StartGame.board.addPiece(new pieces.Pawn("src/pieces_images/" + colorImage + "pawn.png", piece.getTeam(), new int[]{newCoordenateX, newCoordenateY}), newCoordenateX, newCoordenateY);
+	            StartGame.board.addPiece(new pieces.Pawn("src/pieces_images/" + colorImage + "pawn.png", piece.getTeam(), new int[]{newCoordenateX, newCoordenateY}), newCoordenateX, newCoordenateY);
 	    		
 	            if(!(newCoordenateX == 1 || newCoordenateX == 6)){
 	    			((Piece) Board.squares[newCoordenateX][newCoordenateY].getAccessibleContext().getAccessibleChild(0)).setMovesCounter();
@@ -54,23 +55,23 @@ public class MakeMove
 	            break;
 	        
 	        case "Knight":
-	            graphics.StartGame.board.addPiece(new pieces.Knight("src/pieces_images/" + colorImage + "knight.png", piece.getTeam(), new int[]{newCoordenateX, newCoordenateY}), newCoordenateX, newCoordenateY);
+	            StartGame.board.addPiece(new pieces.Knight("src/pieces_images/" + colorImage + "knight.png", piece.getTeam(), new int[]{newCoordenateX, newCoordenateY}), newCoordenateX, newCoordenateY);
 	            break;
 	            
 	        case "King":
-	            graphics.StartGame.board.addPiece(new pieces.King("src/pieces_images/" + colorImage + "king.png", piece.getTeam(), new int[]{newCoordenateX, newCoordenateY}), newCoordenateX, newCoordenateY);
+	            StartGame.board.addPiece(new pieces.King("src/pieces_images/" + colorImage + "king.png", piece.getTeam(), new int[]{newCoordenateX, newCoordenateY}), newCoordenateX, newCoordenateY);
 	            break;
 	            
 	        case "Bishop":
-	            graphics.StartGame.board.addPiece(new pieces.Bishop("src/pieces_images/" + colorImage + "bishop.png", piece.getTeam(), new int[]{newCoordenateX, newCoordenateY}), newCoordenateX, newCoordenateY);
+	            StartGame.board.addPiece(new pieces.Bishop("src/pieces_images/" + colorImage + "bishop.png", piece.getTeam(), new int[]{newCoordenateX, newCoordenateY}), newCoordenateX, newCoordenateY);
 	            break;
 	            
 	        case "Rook":
-	            graphics.StartGame.board.addPiece(new pieces.Rook("src/pieces_images/" + colorImage + "rook.png", piece.getTeam(), new int[]{newCoordenateX, newCoordenateY}), newCoordenateX, newCoordenateY);
+	            StartGame.board.addPiece(new pieces.Rook("src/pieces_images/" + colorImage + "rook.png", piece.getTeam(), new int[]{newCoordenateX, newCoordenateY}), newCoordenateX, newCoordenateY);
 	            break;
 	            
 	        case "Queen":
-	            graphics.StartGame.board.addPiece(new pieces.Queen("src/pieces_images/" + colorImage + "queen.png", piece.getTeam(), new int[]{newCoordenateX, newCoordenateY}), newCoordenateX, newCoordenateY);
+	            StartGame.board.addPiece(new pieces.Queen("src/pieces_images/" + colorImage + "queen.png", piece.getTeam(), new int[]{newCoordenateX, newCoordenateY}), newCoordenateX, newCoordenateY);
 	            break;
         }
         
@@ -89,17 +90,19 @@ public class MakeMove
 		Board.isHumanTurn = Board.isHumanTurn ? false : true;
 	}
 	
-	public static void makeArrayForTree()
+	public static Piece[][] makeArrayForTree()
 	{
-		matrixPieces = new pieces.Piece[8][8];
+		Piece[][] pieceMatrix = new Piece[8][8];
 		
 		for (int i = 0; i < 8; i++) 
 		{
 			for (int j = 0; j < 8; j++) 
 			{
-				matrixPieces[i][j] = (pieces.Piece) Board.squares[i][j].getAccessibleContext().getAccessibleChild(0);
+				pieceMatrix[i][j] = (pieces.Piece) Board.squares[i][j].getAccessibleContext().getAccessibleChild(0);
 			}
 		}
+		
+		return pieceMatrix;
 	}
 	
 	public static void removeAllPieces()

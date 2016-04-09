@@ -16,7 +16,6 @@ public class Board extends JFrame implements MouseListener
 {
 	
     public static JPanel[][] squares = new JPanel[8][8];
-    public boolean isSelected = false;
     public static pieces.Piece pieceSelected;
     public static boolean isHumanTurn = true;
     
@@ -64,7 +63,7 @@ public class Board extends JFrame implements MouseListener
     	paintAll(getGraphics());
     }
     
-    public void cleanBoard()
+    public static void cleanBoard()
     {
         for(int i = 0; i < 8; i++)
         {
@@ -73,7 +72,7 @@ public class Board extends JFrame implements MouseListener
             	squares[i][j].setBorder(null);            
             }
         }
-    	isSelected = false;
+    	
     }
 
     
@@ -87,26 +86,19 @@ public class Board extends JFrame implements MouseListener
 	    	int squareHasPiece = e.getComponent().getAccessibleContext().getAccessibleChildrenCount();
 	    	
 	        /* You have selected a piece */
-	        if(squareHasPiece != 0 && !isSelected){
+	        if(squareHasPiece != 0 && PossibleMoves.possibleMoves.isEmpty()){
 	            pieces.Piece piece = (pieces.Piece) e.getComponent().getAccessibleContext().getAccessibleChild(0);
 	            PossibleMoves.reviewPiece(piece);
 	            pieceSelected = piece;
-	            isSelected = true;
 	        }
 	        
 	        /* You had made a move */
-	        else if(isSelected){
-	        	
-	        	/* If the JPanel that is wanted to move is in the possibleMoves do it */
-	        	if(PossibleMoves.possibleMoves.contains(e.getComponent())){
-	            	MakeMove.movePiece(pieceSelected, e.getComponent().getName());
-	            	cleanBoard();
-	        	} else{
-	        		JOptionPane.showMessageDialog(null, "Movimiento no permitido!");
-	            	cleanBoard();
-	        	}
+        	/* If the JPanel that is wanted to move is in the possibleMoves, do it */
+	        else if(PossibleMoves.possibleMoves.contains(e.getComponent())){
+            	MakeMove.movePiece(pieceSelected, e.getComponent().getName());
+            	cleanBoard();
 	        	PossibleMoves.possibleMoves.clear();
-	
+	        	
 	        }
 	        
 	        else{
@@ -120,9 +112,11 @@ public class Board extends JFrame implements MouseListener
     
     public static void setBorders(int x, int y)
     {
-    	Board.squares[x][y].setBorder(new CompoundBorder(
-        	    BorderFactory.createMatteBorder(0, 0, 0, 0, Color.RED), 
-        	    BorderFactory.createMatteBorder(2, 2, 2, 2, Color.RED)));
+    	if(isHumanTurn){
+	    	Board.squares[x][y].setBorder(new CompoundBorder(
+	        	    BorderFactory.createMatteBorder(0, 0, 0, 0, Color.RED), 
+	        	    BorderFactory.createMatteBorder(3, 3, 3, 3, Color.DARK_GRAY)));
+    	}
     }
     
     @Override

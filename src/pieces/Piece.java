@@ -56,7 +56,9 @@ public abstract class Piece extends JLabel implements Cloneable
     public int[] getCoordenates(){
     	return this.coordenates;
     }
-    public Object clone() throws CloneNotSupportedException {
+    
+    public Object clone() throws CloneNotSupportedException 
+    {
         return super.clone();
     }
 }
