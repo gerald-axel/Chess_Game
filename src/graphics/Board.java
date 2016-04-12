@@ -98,15 +98,14 @@ public class Board extends JFrame implements MouseListener
             	MakeMove.movePiece(pieceSelected, e.getComponent().getName());
             	cleanBoard();
 	        	PossibleMoves.possibleMoves.clear();
-	        	
 	        }
 	        
+	        /* If you have clicked a panel that doesnt has nothing */
 	        else{
 	        	cleanBoard();
+	        	PossibleMoves.possibleMoves.clear();
 	        }
-    	} else{
-    		JOptionPane.showMessageDialog(null, "No es tu turno.");
-    	}
+    	} 
     }
 
     
