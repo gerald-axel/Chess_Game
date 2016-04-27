@@ -17,12 +17,18 @@ public class MakeMove
 						
 		int oldPieceCoordenates[] = piece.getCoordenates();
 		
-		reviewIfIsEating(newCoordenateX, newCoordenateY);
-		generateNewPiece(newCoordenateX, newCoordenateY, piece);
-		StartGame.board.removePiece(oldPieceCoordenates[0], oldPieceCoordenates[1]);
+		if(!PossibleMoves.castling){
+			reviewIfIsEating(newCoordenateX, newCoordenateY);
+			generateNewPiece(newCoordenateX, newCoordenateY, piece);
+			StartGame.board.removePiece(oldPieceCoordenates[0], oldPieceCoordenates[1]);
+		} else{
+			castlingMove();
+		}
+		
     	Board.cleanBoard();
 		StartGame.board.repaintBoard();
     	PossibleMoves.possibleMoves.clear();
+		PossibleMoves.castling = false;
 		changeTurn();
 		
 		/* Machine turn */
@@ -130,6 +136,31 @@ public class MakeMove
 					generateNewPiece(i, j, newBoardMachine[i][j]);
 				}
 			}
+		}
+	}
+	
+	public static void castlingMove()
+	{
+		Piece rook, queen;
+		
+		switch(PossibleMoves.castlingType){
+			case 1:
+				rook = (pieces.Piece) Board.squares[7][0].getAccessibleContext().getAccessibleChild(0);
+				queen = (pieces.Piece) Board.squares[7][4].getAccessibleContext().getAccessibleChild(0);
+				generateNewPiece(7, 3, rook);
+				generateNewPiece(7, 2, queen);
+				StartGame.board.removePiece(7, 0);
+				StartGame.board.removePiece(7, 4);
+				break;
+				
+			case 2:
+				rook = (pieces.Piece) Board.squares[7][7].getAccessibleContext().getAccessibleChild(0);
+				queen = (pieces.Piece) Board.squares[7][4].getAccessibleContext().getAccessibleChild(0);
+				generateNewPiece(7, 5, rook);
+				generateNewPiece(7, 6, queen);
+				StartGame.board.removePiece(7, 7);
+				StartGame.board.removePiece(7, 4);
+				break;
 		}
 	}
 }

@@ -3,6 +3,8 @@ package logic;
 import graphics.Board;
 import pieces.Piece;
 import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -11,6 +13,8 @@ import javax.swing.JPanel;
  */
 public class PossibleMoves {
 	public static ArrayList<JPanel> possibleMoves = new ArrayList<JPanel>();
+	public static boolean castling = false;
+	public static int castlingType;
 
 	public PossibleMoves() {
 	}
@@ -116,6 +120,7 @@ public class PossibleMoves {
 	}
 
 	public static ArrayList rookMoves(int x, int y, Piece piece) {
+		
 		for (int j = 1; j <= 8 && rookTrajectory(x + j, y, piece); j++) {
 		}
 
@@ -127,7 +132,10 @@ public class PossibleMoves {
 
 		for (int j = 1; j <= 8 && rookTrajectory(x, y - j, piece); j++) {
 		}
-
+		
+		if(Board.isHumanTurn){
+			castling(x, y, piece);
+		}
 		return possibleMoves;
 	}
 
@@ -241,6 +249,42 @@ public class PossibleMoves {
 				}
 			}
 		}
+	}
+	
+	public static void castling(int x, int y, pieces.Piece piece){
+		int reviewIterations;
+		int directionIterations;
+		int flow;
+		
+		if(y == 0){
+			reviewIterations = 4;
+			directionIterations = 1;
+			castlingType = 1;
+			flow = 1;
+		} else {
+			reviewIterations = 3;
+			directionIterations = -1;
+			castlingType = 2;
+			flow = -1;
+		}
+		
+		for(int i = 0; i < reviewIterations; directionIterations += flow, i++){
+			pieces.Piece squarePiece = (pieces.Piece) Board.squares[x][y + directionIterations].getAccessibleContext().getAccessibleChild(0);
+			
+			if(squarePiece != null){
+				if(squarePiece.getType() == "Queen"){
+					castling = Boolean.parseBoolean(JOptionPane.showInputDialog(null, "¿Desea realizar un enroque?"));
+					return;
+				}
+			} else {
+				if(i != (reviewIterations - 1)){
+					continue;
+				} else {
+					return;
+				}
+			}
+							
+		}		
 	}
 
 	public static boolean reviewBoardLimits(int x, int y) {
